@@ -1,15 +1,27 @@
-# This is a branch of 
+# 28C256 Arduino programmer
+
+## Branched from [28C256](http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf) EEPROM Programmer
+## Using [Arduino Uno](https://store.arduino.cc/products/arduino-uno-rev3?queryID=undefined)
+
 https://github.com/ppravatto/28C256
 
-# 28C256 EEPROM Prodgrammer
-This repository describes a simple open-source programmer for the [28C256](http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf) 32kB EEPROM memory.
+Using Arduino
 
-The device has been thought as an affordable tool to aid the hobbyist in the development of small 8-bit computer projects (e.g. 6502 or Z80 processors based computers).
+# Step 1: Install PlatformIO in VSCode
 
-The programmer can be controlled directly via the Arduino serial port. A `python3` code is provided as a terminal-based interface.
+https://code.visualstudio.com/
+https://platformio.org/
 
-#### Disclamers
-This repository and all its content are provided "as is" without any kind of warranty. Any use of the software and hardware described and contained in this project is at your own risk. The authors cannot be held liable for any damage or harm deriving directly or indirectly from the use, direct or indirect, of what is contained in this repository.
+# Step 2: Open this project in VSCode
+
+`git clone https://github.com/herdofsheep/EEPROM-programmer`
+`code EEPROM-programmer`
+
+# Handle dependencies
+
+`python -m venv .venv`
+`source .venv/bin/activate`
+`pip install -e .`
 
 ## Hardware description
 The project is based around the [ATmega328P](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf) 8-bit microcontroller contained in an Arduino Nano board.
