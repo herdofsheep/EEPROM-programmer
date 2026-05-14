@@ -1,54 +1,58 @@
 # 28C256 Arduino programmer
 
-## Branched from [28C256](http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf) EEPROM Programmer
+## Branched from [28C256](http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf) Project
 ## Using [Arduino Uno](https://store.arduino.cc/products/arduino-uno-rev3?queryID=undefined)
 
-https://github.com/ppravatto/28C256
-
-Using Arduino
-
-# Step 1: Install PlatformIO in VSCode
-
-https://code.visualstudio.com/
-https://platformio.org/
-
-# Step 2: Open this project in VSCode
-
-`git clone https://github.com/herdofsheep/EEPROM-programmer`
-`code EEPROM-programmer`
-
-# Handle dependencies
-
-`python -m venv .venv`
-`source .venv/bin/activate`
-`pip install -e .`
-
-## Hardware description
-The project is based around the [ATmega328P](https://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061B.pdf) 8-bit microcontroller contained in an Arduino Nano board.
-
-The 8 I/O EEPROM pins are directly driven by the Arduino digital pins in the range from `D5` to `D12`. The 15 EEPROM address lines are driven through the use of two [74HC595](https://www.ti.com/lit/ds/symlink/sn74hc595.pdf?ts=1647597704824&ref_url=https%253A%252F%252Fwww.google.com%252F) 8-bit shift registers organized in a cascade configuration. The analog pins of the Arduino board (`A0` to `A5`) are used to operate both the control pins of the EEPROM (WE, RE, OE) and the data and clock lines of the shift registers.
-
-The electronic schematic, available as a `.pdf` file in the `hardware` folder, is the following:
-
-![alt text](https://github.com/ppravatto/28C256/blob/main/hardware/Schematic.png)
-
-The Gerber files for the PCB, designed using the EasyEDA software, are also available in the `hardware` folder.
-
-### Components
+# Hardware Requirements
 The components required to build the programmer are the following:
-* 1x Arduino Nano board
-* 1x 28-Pin ZIF socket (or regular socket)
-* 2x SN74HC595 Shift Registers (16-Pin DIP package)
-* 3x 100nF MLCC 0805 SMD capacitors (6.3V or higher)
+* 1x [Arduino Uno](https://store.arduino.cc/products/arduino-uno-rev3?queryID=undefined)
+* 1x [28C256 EEPROM](https://www.mouser.co.uk/ProductDetail/Microchip-Technology/AT28C256-15SU?qs=MAR%2F2X5XOp7W6WUPOcncFQ%3D%3D)  to program
+* 2x [SN74HC595 Shift Registers](https://thepihut.com/products/74hc595-shift-register-3-pack)
+* 1x [Breadboard](https://www.mouser.co.uk/ProductDetail/BusBoard-Prototype-Systems/BB830?qs=VEfmQw3KOauhPeTwYxNCaA%3D%3D&countryCode=GB&currencyCode=GBP)
+* Some [22AWG wire](https://thepihut.com/products/solid-core-wire-spool-25ft-22awg-white)
 
-The Arduino board can be soldered directly onto the PCB using the integrated pin headers but I would suggest the use of 2.54mm pitch pin header connectors.
+Optional
+* 1x [ZIF socket](https://thepihut.com/products/40-pin-zif-socket) will protect your EEPROM's notoriously fragile legs
+* 3x [0.1µF Capacitors](https://thepihut.com/products/0-1uf-ceramic-capacitors-10-pack) (6.3V or higher) will make your programmer more reliable
+* 1x [Wire Strippers](https://thepihut.com/products/wire-strippers) for breadboarding
 
-TIP: In order to avoid unwanted short circuits while operating the board I would suggest mounting it in a non-conductive enclosure (keep in mind that the screw holes are plated and connected to the GND) or to use rubber feet to lift the board from the work surface.
+# Open in VSCode
 
-## Software
-The programmer is designed to interface with the computer via USB. A serial connection with a baud rate of 115200 is set as the default.
+### Install [PlatformIO](https://platformio.org/) in [VSCode](https://code.visualstudio.com/)
 
-The Arduino code is provided in the `firmware` folder and can be loaded directly to the Nano board using the [Arduino IDE](https://www.arduino.cc/en/software) or, alternatively, directly using the [Arduino CLI](https://github.com/arduino/arduino-cli). Once flashed with the firmware, the board is completely stand-alone and will listen to the serial port awaiting instructions. These can be provided manually by the user using the serial monitor of the Arduino IDE or, more conveniently, using the `python3` program provided in the `interface` folder.
+```bash
+git clone https://github.com/herdofsheep/EEPROM-programmer
+```
+
+```bash
+code EEPROM-programmer
+```
+
+### Handle dependencies
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+# Circuitry
+
+The 8 I/O EEPROM pins are driven by the Arduino digital pins `D5` to `D12`.
+
+The 15 EEPROM address lines are driven through the use of two [74HC595](https://www.ti.com/lit/ds/symlink/sn74hc595.pdf?ts=1647597704824&ref_url=https%253A%252F%252Fwww.google.com%252F) 8-bit shift registers. 
+
+The analog pins of the Arduino board (`A0` to `A5`) are used to operate the control pins of the EEPROM (WE, RE, OE) and the data and clock lines of the shift registers.
+
+![alt text](assets/schematic.png)
+
+# Flashing
+
+Connect Arduino Uno via USB with a baud rate of 115200 as the default.
+
+Once flashed with the firmware, 
+
+the board is completely stand-alone and will listen to the serial port awaiting instructions. These can be provided manually by the user using the serial monitor of the Arduino IDE or, more conveniently, using the `python3` program provided in the `interface` folder.
 
 ### Serial commands
 The programmer accepts two types of serial commands that directly encode a read/write operation of a memory chunk. The default maximum chunk is set to 256 bytes. All the command fields must be provided in `HEX` format. The firmware is not case sensitive and automatically strips the encoding format (e.g. the inputs `0xEA`, `0xea`, `EA`, `ea` should be equivalent).
