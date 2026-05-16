@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "myEEPROM.h"
 
 EEPROM_28C256 myEEPROM;

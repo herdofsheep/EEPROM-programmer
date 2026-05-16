@@ -1,7 +1,9 @@
 # 28C256 Arduino programmer
 
-## Branched from [28C256](http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf) Project
+## Branched from [28C256](https://github.com/ppravatto/28C256) Project
+## For [AT28C256 EEPROM](http://ww1.microchip.com/downloads/en/DeviceDoc/doc0006.pdf)
 ## Using [Arduino Uno](https://store.arduino.cc/products/arduino-uno-rev3?queryID=undefined)
+## Referencing [Ben Eater](https://www.youtube.com/watch?v=K88pgWhEb1M)
 
 # Hardware Requirements
 The components required to build the programmer are the following:
@@ -65,16 +67,21 @@ pio run --target upload --environment blink
 
 ### Flash the EEPROM firmware
 
-Once blink works, upload the main firmware the same way using the `uno` environment:
+Once blink works, upload the main firmware the same way using the `eeprom` environment:
 
 **Terminal:**
 ```bash
-pio run --target upload --environment uno
+pio run --target upload --environment eeprom
 ```
 
-Once flashed with the firmware, 
+Once flashed with the firmware, the board will listen to the serial port awaiting instructions. 
 
-the board is completely stand-alone and will listen to the serial port awaiting instructions. These can be provided manually by the user using the serial monitor of the Arduino IDE or, more conveniently, using the `python3` program provided in the `interface` folder.
+**Manual:**
+
+Use the PlatformIO serial monitor (click the plug icon in the VSCode status bar, or run `pio device monitor`) 
+
+**Python Script**
+more conveniently, using the `python3` program provided in the `interface` folder.
 
 ### Serial commands
 The programmer accepts two types of serial commands that directly encode a read/write operation of a memory chunk. The default maximum chunk is set to 256 bytes. All the command fields must be provided in `HEX` format. The firmware is not case sensitive and automatically strips the encoding format (e.g. the inputs `0xEA`, `0xea`, `EA`, `ea` should be equivalent).
