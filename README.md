@@ -44,11 +44,33 @@ The 15 EEPROM address lines are driven through the use of two [74HC595](https://
 
 The analog pins of the Arduino board (`A0` to `A5`) are used to operate the control pins of the EEPROM (WE, RE, OE) and the data and clock lines of the shift registers.
 
-![alt text](assets/schematic.png)
+![circuit schematic](assets/schematic.png)
 
 # Flashing
 
-Connect Arduino Uno via USB with a baud rate of 115200 as the default.
+Connect the Arduino Uno via USB.
+
+### Test your setup with blink
+
+Before flashing the EEPROM firmware, verify your PlatformIO setup with the [blink](https://docs.arduino.cc/built-in-examples/basics/Blink/) sketch — the onboard LED should flash once per second.
+
+**VSCode:** open the PlatformIO tab, expand the `blink` environment, and click **Upload**.
+
+![platformIO](assets/platformIO.png)
+
+**Terminal:**
+```bash
+pio run --target upload --environment blink
+```
+
+### Flash the EEPROM firmware
+
+Once blink works, upload the main firmware the same way using the `uno` environment:
+
+**Terminal:**
+```bash
+pio run --target upload --environment uno
+```
 
 Once flashed with the firmware, 
 
